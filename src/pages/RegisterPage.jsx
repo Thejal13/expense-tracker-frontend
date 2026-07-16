@@ -1,60 +1,80 @@
 import { useState } from "react";
 import api from "../services/api";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-function LoginPage() {
+function RegisterPage() {
 
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const navigate = useNavigate();
+    const handleRegister = async (e) => {
 
-    const handleLogin = async () => {
-
-        console.log("Login button clicked!");
+        e.preventDefault();
 
         try {
 
-            const response = await api.post("/users/login", {
+            const response = await api.post("/users/register", {
+                name,
                 email,
-                password,
+                password
             });
 
             alert(response.data.message);
 
-            navigate("/dashboard");
+            setName("");
+            setEmail("");
+            setPassword("");
 
         } catch (error) {
 
-            console.error(error);
-
             if (error.response) {
-                alert(error.response.data.message || "Login failed!");
+                alert(error.response.data.message);
             } else {
                 alert("Server not reachable!");
             }
+
         }
+
     };
 
     return (
+
         <div
             className="container d-flex justify-content-center align-items-center"
             style={{ minHeight: "100vh" }}
         >
+
             <div className="col-md-6 col-lg-4">
 
                 <div className="card shadow-lg p-4">
 
-                    <h2 className="text-center mb-2">
-                        Expense Tracker 💸
+                    <h2 className="text-center mb-4">
+                        Register 📝
                     </h2>
 
-                    <p className="text-center text-muted mb-4">
-                        Sign in to manage your expenses
-                    </p>
+                    <div className="mb-3">
+
+                        <label className="form-label">
+                            Name
+                        </label>
+
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+
+                    </div>
 
                     <div className="mb-3">
-                        <label className="form-label">Email</label>
+
+                        <label className="form-label">
+                            Email
+                        </label>
+
                         <input
                             type="email"
                             className="form-control"
@@ -62,10 +82,15 @@ function LoginPage() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
+
                     </div>
 
                     <div className="mb-3">
-                        <label className="form-label">Password</label>
+
+                        <label className="form-label">
+                            Password
+                        </label>
+
                         <input
                             type="password"
                             className="form-control"
@@ -73,27 +98,34 @@ function LoginPage() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
+
                     </div>
 
                     <button
-                        className="btn btn-primary w-100"
-                        onClick={handleLogin}
+                        className="btn btn-success w-100"
+                        onClick={handleRegister}
                     >
-                        Login
+                        Register
                     </button>
 
                     <p className="text-center mt-3">
-                        Don't have an account?
-                        <Link to="/register" className="ms-2">
-                            Register
+
+                        Already have an account?
+
+                        <Link to="/login" className="ms-2">
+                            Login
                         </Link>
+
                     </p>
 
                 </div>
 
             </div>
+
         </div>
+
     );
+
 }
 
-export default LoginPage;
+export default RegisterPage;
