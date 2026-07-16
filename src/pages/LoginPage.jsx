@@ -20,6 +20,17 @@ function LoginPage() {
                 password,
             });
 
+            // Check what backend returns
+            console.log(response.data);
+
+            // Save JWT Token
+            localStorage.setItem("token", response.data.token);
+
+            // Save User Details
+            localStorage.setItem("userId", response.data.id);
+            localStorage.setItem("userName", response.data.name);
+            localStorage.setItem("userEmail", response.data.email);
+
             alert(response.data.message);
 
             navigate("/dashboard");
@@ -55,6 +66,7 @@ function LoginPage() {
 
                     <div className="mb-3">
                         <label className="form-label">Email</label>
+
                         <input
                             type="email"
                             className="form-control"
@@ -66,6 +78,7 @@ function LoginPage() {
 
                     <div className="mb-3">
                         <label className="form-label">Password</label>
+
                         <input
                             type="password"
                             className="form-control"
@@ -84,6 +97,7 @@ function LoginPage() {
 
                     <p className="text-center mt-3">
                         Don't have an account?
+
                         <Link to="/register" className="ms-2">
                             Register
                         </Link>
